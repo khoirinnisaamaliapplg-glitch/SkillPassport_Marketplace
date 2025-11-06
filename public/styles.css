@@ -1,0 +1,130 @@
+/* ========================= */
+/*   GLOBAL STYLING & BODY   */
+/* ========================= */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #f8f9fa;
+  overflow-x: hidden;
+}
+
+/* Kontainer utama agar footer di bawah */
+main {
+  min-height: calc(100vh - 100px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* ========================= */
+/*          NAVBAR           */
+/* ========================= */
+.custom-navbar {
+  background-color: #0f2f63;
+}
+.custom-navbar .navbar-brand {
+  color: white;
+  font-size: 1.3rem;
+}
+.custom-navbar .nav-link {
+  color: white !important;
+  margin-left: 15px;
+  transition: color 0.3s ease;
+}
+.custom-navbar .nav-link:hover {
+  color: #81ef59 !important;
+}
+
+/* ========================= */
+/*        HERO SECTION       */
+/* ========================= */
+.hero-section {
+  position: relative;
+  height: 85vh;
+  background: linear-gradient(135deg, rgba(16,40,99,0.9), rgba(44,206,117,0.85)),
+              url("https://images.unsplash.com/photo-1515169067865-5387ec356754?auto=format&fit=crop&w=1950&q=80") center/cover no-repeat;
+}
+.hero-section .overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15,47,99,0.4);
+}
+.hero-section h1 span {
+  color: #81ef59;
+}
+
+/* ========================= */
+/*         ANIMATION         */
+/* ========================= */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-fade {
+  animation: fadeInUp 1s ease forwards;
+}
+.animate-fade-delay {
+  opacity: 0;
+  animation: fadeInUp 1.2s ease forwards;
+  animation-delay: 0.3s;
+}
+
+/* ========================= */
+/*         STORE CARD        */
+/* ========================= */
+.store-card {
+  border: none;
+  border-radius: 15px;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+.store-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ========================= */
+/*        PRODUCT CARD       */
+/* ========================= */
+.product-card img {
+  border-radius: 10px 10px 0 0;
+  transition: transform 0.3s ease;
+}
+.product-card:hover img {
+  transform: scale(1.05);
+}
+.product-card .btn {
+  transition: all 0.3s ease;
+}
+.product-card .btn:hover {
+  background-color: #1ebd5f;
+  transform: translateY(-2px);
+}
+
+/* ========================= */
+/*          FOOTER           */
+/* ========================= */
+.footer {
+  background-color: #0f2f63;
+  color: white;
+  width: 100%;
+  padding: 20px 0;
+  text-align: center;
+  margin-top: auto;
+}
+
+/* ========================= */
+/*         RESPONSIVE        */
+/* ========================= */
+@media (max-width: 768px) {
+  .hero-section {
+    height: 65vh;
+    background-position: center;
+  }
+  .hero-section h1 { font-size: 1.8rem; }
+  .hero-section p { font-size: 0.95rem; }
+}
