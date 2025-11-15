@@ -20,8 +20,8 @@ return new class extends Migration
             $table->timestamps();
 
             // Optional: tambah foreign key jika ada tabel kategori dan toko
-            // $table->foreign('id_kategori')->references('id')->on('kategori')->onDelete('cascade');
-            // $table->foreign('id_toko')->references('id')->on('toko')->onDelete('cascade');
+           $table->foreign('id_kategori')->references('id_kategori')->on('kategori')->onDelete('cascade');
+            $table->foreign('id_toko')->references('id_toko')->on('toko')->onDelete('cascade');
         });
     }
 
