@@ -98,41 +98,49 @@
         <p class="text-muted small">Bergabung dan mulai berjualan di Marketplace Sekolah!</p>
       </div>
 
-      <form action="#" method="POST">
-        <div class="mb-3">
-          <label for="name" class="form-label fw-semibold">Nama Lengkap</label>
-          <input type="text" class="form-control" id="name" placeholder="Masukkan nama lengkap" required>
-        </div>
+      <form action="{{ route('register') }}" method="POST">
+  @csrf
 
-        <div class="mb-3">
-          <label for="email" class="form-label fw-semibold">Username</label>
-          <input type="email" class="form-control" id="username" placeholder="Masukkan username aktif" required>
-        </div>
+  <div class="mb-3">
+    <label for="name" class="form-label fw-semibold">Nama Lengkap</label>
+    <input type="text" name="nama" class="form-control" id="name" placeholder="Masukkan nama lengkap" required>
+  </div>
 
-        <div class="mb-3">
-          <label for="role" class="form-label fw-semibold">Role</label>
-          <select id="role" class="form-select" required>
-            <option value="" selected disabled>Pilih Role</option>
-            <option value="pembeli">Member</option>
-            <option value="penjual">Penjual</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
+  <div class="mb-3">
+    <label for="username" class="form-label fw-semibold">Username</label>
+    <input type="text" name="username" class="form-control" id="username" placeholder="Masukkan username aktif" required>
+  </div>
 
-        <div class="mb-3">
-          <label for="password" class="form-label fw-semibold">Password</label>
-          <input type="password" class="form-control" id="password" placeholder="Masukkan password" required>
-        </div>
+  <div class="mb-3">
+  <label class="form-label fw-semibold">Kontak</label>
+  <input type="text" name="kontak" class="form-control" placeholder="Masukkan nomor HP">
+  </div>
 
-        <div class="mb-3">
-          <label for="confirm_password" class="form-label fw-semibold">Konfirmasi Password</label>
-          <input type="password" class="form-control" id="confirm_password" placeholder="Ulangi password" required>
-        </div>
 
-        <button type="submit" class="btn btn-success w-100 rounded-pill fw-semibold mt-3">
-          <i class="fa-solid fa-user-plus me-2"></i> Daftar Sekarang
-        </button>
-      </form>
+  <div class="mb-3">
+    <label for="role" class="form-label fw-semibold">Role</label>
+    <select id="role" name="role" class="form-select" required>
+      <option value="" selected disabled>Pilih Role</option>
+      <option value="member">Member</option>
+      <option value="admin">Admin</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="password" class="form-label fw-semibold">Password</label>
+    <input type="password" name="password" class="form-control" id="password" placeholder="Masukkan password" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="confirm_password" class="form-label fw-semibold">Konfirmasi Password</label>
+    <input type="password" name="password_confirmation" class="form-control" id="confirm_password" placeholder="Ulangi password" required>
+  </div>
+
+  <button type="submit" class="btn btn-success w-100 rounded-pill fw-semibold mt-3">
+    <i class="fa-solid fa-user-plus me-2"></i> Daftar Sekarang
+  </button>
+</form>
+
 
       <div class="text-center mt-4">
         <p class="small mb-0">Sudah punya akun?

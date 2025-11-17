@@ -5,91 +5,108 @@
 @section('content')
 
 <style>
+    /* HEADER */
     .produk-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px 5px;
+        padding: 18px 10px;
+        background: linear-gradient(90deg, #102863, #15408a);
+        border-radius: 12px;
+        color: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
-
     .page-title {
         font-weight: 700;
-        color: #0f2f63;
         font-size: 28px;
+        margin: 0;
     }
 
+    /* BUTTON TAMBAH */
     .btn-tambah {
         background: linear-gradient(90deg, #81ef59, #2cce75);
-        padding: 10px 22px;
+        padding: 11px 25px;
         border: none;
-        border-radius: 10px;
+        border-radius: 12px;
         font-weight: bold;
-        color: #0f2f63;
+        color: #08305a;
         font-size: 15px;
-        transition: 0.3s;
+        transition: 0.3s ease;
     }
-
     .btn-tambah:hover {
-        opacity: .85;
-        transform: translateY(-2px);
+        transform: translateY(-3px);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.2);
     }
 
+    /* CARD TABLE */
     .produk-container {
-        background: #fff;
+        background: #ffffff;
         border-radius: 18px;
         padding: 25px;
-        margin-top: 20px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        margin-top: 25px;
+        box-shadow: 0 6px 22px rgba(0,0,0,0.12);
+        border-left: 10px solid #2cce75;
     }
 
+    /* TABLE */
     .produk-table thead {
         background: #102863;
-        color: #fff;
+        color: white;
+        font-size: 15px;
     }
-
+    .produk-table tbody tr {
+        transition: 0.25s;
+    }
     .produk-table tbody tr:hover {
-        background: rgba(44, 206, 117, 0.07);
-        transition: 0.3s;
+        background: rgba(44, 206, 117, 0.08);
+        transform: scale(1.01);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     }
 
+    /* IMAGE */
     .produk-img {
-        border-radius: 12px;
-        width: 70px;
-        height: 70px;
+        border-radius: 10px;
+        width: 75px;
+        height: 75px;
         object-fit: cover;
         border: 3px solid #2cce75;
+        transition: 0.25s;
+    }
+    .produk-img:hover {
+        transform: scale(1.1);
+        border-color: #81ef59;
     }
 
+    /* BUTTON ACTION */
     .btn-action {
         padding: 7px 14px;
         border-radius: 8px;
         font-weight: 600;
-        font-size: 13px;
+        font-size: 12px;
         border: none;
         transition: 0.25s;
     }
-
     .btn-edit {
-        background-color: #2cce75;
+        background: linear-gradient(90deg, #2cce75, #1fae62);
         color: white;
     }
     .btn-edit:hover {
-        background-color: #1fae62;
+        box-shadow: 0 3px 12px rgba(31,174,98,0.5);
     }
-
     .btn-hapus {
-        background-color: #ff4d4d;
-        color: #fff;
+        background: linear-gradient(90deg, #ff4d4d, #e60000);
+        color: white;
     }
     .btn-hapus:hover {
-        background-color: #e60000;
+        box-shadow: 0 3px 12px rgba(230,0,0,0.5);
     }
-
 </style>
 
 <div class="produk-header">
     <h2 class="page-title">Daftar Produk</h2>
-    <button class="btn-tambah"><i class="fa fa-plus me-2"></i>Tambah Produk</button>
+    <a href="{{ route('member.produk.create') }}" class="btn-tambah">
+        <i class="fa fa-plus me-2"></i>Tambah Produk
+    </a>
 </div>
 
 <div class="produk-container">
@@ -107,50 +124,42 @@
         </thead>
 
         <tbody class="text-center">
-            <tr>
-                <td>1</td>
-                <td>
-                    <img src="https://via.placeholder.com/70" class="produk-img">
-                </td>
-                <td class="fw-semibold">Keripik Pedas</td>
-                <td>Rp 15.000</td>
-                <td>20</td>
-                <td>Toko Mawar</td>
-                <td>
-                    <button class="btn-action btn-edit me-2">Edit</button>
-                    <button class="btn-action btn-hapus">Hapus</button>
-                </td>
-            </tr>
 
-            <tr>
-                <td>2</td>
-                <td>
-                    <img src="https://via.placeholder.com/70" class="produk-img">
-                </td>
-                <td class="fw-semibold">Kue Kering Coklat</td>
-                <td>Rp 25.000</td>
-                <td>15</td>
-                <td>Toko Selaras</td>
-                <td>
-                    <button class="btn-action btn-edit me-2">Edit</button>
-                    <button class="btn-action btn-hapus">Hapus</button>
-                </td>
-            </tr>
+        @foreach($produks as $index => $produk)
+        <tr>
+            <td>{{ $index + 1 }}</td>
 
-            <tr>
-                <td>3</td>
-                <td>
+            <td>
+                @if($produk->gambars->isNotEmpty())
+                    @foreach($produk->gambars as $gambar)
+                        <img src="{{ asset('storage/produk/' . $gambar->nama_gambar) }}" class="produk-img">
+                    @endforeach
+                @else
                     <img src="https://via.placeholder.com/70" class="produk-img">
-                </td>
-                <td class="fw-semibold">Bolu Pandan</td>
-                <td>Rp 30.000</td>
-                <td>8</td>
-                <td>Toko Sari Rasa</td>
-                <td>
-                    <button class="btn-action btn-edit me-2">Edit</button>
-                    <button class="btn-action btn-hapus">Hapus</button>
-                </td>
-            </tr>
+                @endif
+            </td>
+
+            <td>{{ $produk->nama_produk }}</td>
+            <td>Rp {{ number_format($produk->harga,0,',','.') }}</td>
+            <td>{{ $produk->stok }}</td>
+            <td>{{ $produk->toko->nama_toko ?? '-' }}</td>
+
+            <td>
+                <a href="{{ route('member.produk.edit', $produk->id_produk) }}" 
+                   class="btn-action btn-edit me-1">Edit</a>
+
+                <form action="{{ route('member.produk.destroy', $produk->id_produk) }}" 
+                      method="POST" style="display:inline-block;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn-action btn-hapus"
+                        onclick="return confirm('Yakin ingin hapus produk ini?')">
+                        Hapus
+                    </button>
+                </form>
+            </td>
+        </tr>
+        @endforeach
 
         </tbody>
     </table>

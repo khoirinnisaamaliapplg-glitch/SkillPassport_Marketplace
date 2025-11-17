@@ -16,7 +16,7 @@
 
     .profile-header {
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         position: relative;
     }
 
@@ -25,16 +25,6 @@
         color: #0f2f63;
     }
 
-    .profile-photo {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        border: 4px solid #2cce75;
-        object-fit: cover;
-        margin-bottom: 10px;
-    }
-
-    /* Tombol Edit Floating */
     .edit-btn {
         position: absolute;
         right: 0;
@@ -81,30 +71,33 @@
 
         <a href="/member/profil/edit" class="edit-btn">Edit Profil</a>
 
-        <img src="https://via.placeholder.com/120" class="profile-photo">
-        <h3>Nama Member</h3>
+        <h3>{{ $user->nama }}</h3>
         <p class="text-muted">Member Marketplace</p>
     </div>
 
     <!-- INFORMASI -->
     <div class="info-box">
         <div class="info-title">Nama Lengkap</div>
-        <div class="info-text">Nama Member</div>
+        <div class="info-text">{{ $user->nama }}</div>
     </div>
 
     <div class="info-box">
         <div class="info-title">Username</div>
-        <div class="info-text">member123</div>
+        <div class="info-text">{{ $user->username }}</div>
     </div>
 
     <div class="info-box">
         <div class="info-title">Kontak</div>
-        <div class="info-text">+628123456789</div>
+        <div class="info-text">
+            {{ $user->kontak ? $user->kontak : '-' }}
+        </div>
     </div>
 
     <div class="info-box">
         <div class="info-title">Alamat</div>
-        <div class="info-text">Jl. Contoh No. 45</div>
+        <div class="info-text">
+            {{ $user->alamat ? $user->alamat : '-' }}
+        </div>
     </div>
 
 </div>

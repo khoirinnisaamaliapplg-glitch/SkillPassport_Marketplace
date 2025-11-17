@@ -106,9 +106,30 @@
       <ul class="nav flex-column">
         <li class="nav-item"><a href="/dashboard" class="nav-link active"><i class="fa-solid fa-gauge me-2"></i> Dashboard</a></li>
         <li class="nav-item"><a href="/admin/user" class="nav-link"><i class="fa-solid fa-users me-2"></i> Users</a></li>
-        <li class="nav-item"><a href="/produk" class="nav-link"><i class="fa-solid fa-box me-2"></i> Produk</a></li>
+        <li class="nav-item">
+    <a href="{{ route('admin.kategori') }}" class="nav-link">
+        <i class="fa-solid fa-tags me-2"></i> Kategori
+    </a>
+</li>
+
+        <li class="nav-item">
+    <a href="{{ route('admin.produk') }}" class="nav-link">
+        <i class="fa-solid fa-box me-2"></i> Produk
+    </a>
+</li>
+
         <li class="nav-item"><a href="/admin/toko" class="nav-link"><i class="fa-solid fa-store me-2"></i> Toko</a></li>
-        <li class="nav-item mt-3 border-top pt-2"><a href="/logout" class="nav-link text-danger"><i class="fa-solid fa-right-from-bracket me-2"></i> Logout</a></li>
+       <li class="nav-item mt-3 border-top pt-2">
+          <a href="#" class="nav-link text-danger"
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
+          </a>
+
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+              @csrf
+          </form>
+        </li>
+
       </ul>
     </div>
 

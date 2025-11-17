@@ -45,16 +45,21 @@
         transition: 0.2s;
     }
 
-    .btn-add {
-        background: #2cce75;
-        border: none;
-        padding: 10px 20px;
-        color: white;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: bold;
-        margin-bottom: 15px;
-    }
+   .btn-add {
+    background: #2cce75;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-add:hover {
+    background: #24b666;
+}
+
 
     .btn-edit {
         background: #102863;
@@ -81,7 +86,9 @@
 
 <div class="table-container">
 
+   <a href="{{ route('admin.User-create') }}">
     <button class="btn-add">+ Tambah User</button>
+</a>
 
     <table>
         <thead>
@@ -96,41 +103,27 @@
         </thead>
 
         <tbody>
+            @foreach ($users as $u)
             <tr>
-                <td>1</td>
-                <td>Budi Santoso</td>
-                <td>08123456789</td>
-                <td>budi123</td>
-                <td>admin</td>
+                <td>{{ $u->id }}</td>
+                <td>{{ $u->nama }}</td>
+                <td>{{ $u->kontak ?? '-' }}</td>
+                <td>{{ $u->username }}</td>
+                <td>{{ $u->role }}</td>
                 <td>
-                    <button class="btn-edit">Edit</button>
-                    <button class="btn-delete">Hapus</button>
-                </td>
-            </tr>
+                    <a href="{{ route('admin.User-edit', $u->id_user) }}">
+    <button class="btn-edit">Edit</button>
+</a>
 
-            <tr>
-                <td>2</td>
-                <td>Ani Lestari</td>
-                <td>08987654321</td>
-                <td>ani_l</td>
-                <td>member</td>
-                <td>
-                    <button class="btn-edit">Edit</button>
-                    <button class="btn-delete">Hapus</button>
-                </td>
-            </tr>
+<form action="{{ route('admin.User.destroy', $u->id_user) }}" method="POST" style="display:inline;">
+    @csrf
+    @method('DELETE')
+    <button class="btn-delete" onclick="return confirm('Yakin hapus user ini?')">Hapus</button>
+</form>
 
-            <tr>
-                <td>3</td>
-                <td>Santo Pratama</td>
-                <td>082233445566</td>
-                <td>santo_p</td>
-                <td>member</td>
-                <td>
-                    <button class="btn-edit">Edit</button>
-                    <button class="btn-delete">Hapus</button>
                 </td>
             </tr>
+            @endforeach
         </tbody>
     </table>
 

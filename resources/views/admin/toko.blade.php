@@ -82,65 +82,44 @@
 
 <div class="table-container">
 
-    <button class="btn-add">+ Tambah Toko</button>
+    
 
     <table>
         <thead>
-            <tr>
-                <th>ID Toko</th>
-                <th>Nama Toko</th>
-                <th>Deskripsi</th>
-                <th>Gambar</th>
-                <th>Kontak</th>
-                <th>Alamat</th>
-                <th>ID User</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
+    <tr>
+        <th>ID Toko</th>
+        <th>Nama Toko</th>
+        <th>Deskripsi</th>
+        <th>Gambar</th>
+        <th>Kontak</th>
+        <th>Alamat</th>
+        <th>Nama Member</th> <!-- ganti dari ID User -->
+        {{-- <th>Aksi</th> --}}
+    </tr>
+</thead>
 
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>Toko Sumber Rejeki</td>
-                <td>Menjual sembako dan kebutuhan harian.</td>
-                <td>toko1.jpg</td>
-                <td>08123456789</td>
-                <td>Jl. Melati No. 12</td>
-                <td>5</td>
-                <td>
-                    <button class="btn-edit">Edit</button>
-                    <button class="btn-delete">Hapus</button>
-                </td>
-            </tr>
+<tbody>
+    @foreach($tokos as $toko)
+    <tr>
+        <td>{{ $toko->id_toko }}</td>
+        <td>{{ $toko->nama_toko }}</td>
+        <td>{{ $toko->deskripsi }}</td>
+        <td>{{ $toko->gambar }}</td>
+        <td>{{ $toko->kontak_toko }}</td>
+        <td>{{ $toko->alamat }}</td>
+        <td>{{ $toko->user->nama }}</td> <!-- tampilkan nama member -->
+        {{-- <td>
+            <a href="{{ route('admin.toko.edit', $toko->id_toko) }}" class="btn-edit">Edit</a>
+            <form action="{{ route('admin.toko.destroy', $toko->id_toko) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn-delete">Hapus</button>
+            </form>
+        </td> --}}
+    </tr>
+    @endforeach
+</tbody>
 
-            <tr>
-                <td>2</td>
-                <td>Toko Maju Jaya</td>
-                <td>Toko alat tulis, buku, dan perlengkapan sekolah.</td>
-                <td>toko2.jpg</td>
-                <td>082233445566</td>
-                <td>Jl. Anggrek No. 45</td>
-                <td>8</td>
-                <td>
-                    <button class="btn-edit">Edit</button>
-                    <button class="btn-delete">Hapus</button>
-                </td>
-            </tr>
-
-            <tr>
-                <td>3</td>
-                <td>Fresh Mart</td>
-                <td>Sayur dan buah segar setiap hari.</td>
-                <td>freshmart.png</td>
-                <td>08777123456</td>
-                <td>Jl. Mawar No. 9</td>
-                <td>3</td>
-                <td>
-                    <button class="btn-edit">Edit</button>
-                    <button class="btn-delete">Hapus</button>
-                </td>
-            </tr>
-        </tbody>
     </table>
 
 </div>

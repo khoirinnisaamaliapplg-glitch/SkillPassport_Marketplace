@@ -80,29 +80,40 @@
 
   <div class="login-card text-center">
     <img src="image/lgmarket.png" alt="Logo" class="logo" />
+
+
     <h3>Login ke Akun Anda</h3>
     <p class="text-muted mb-4">Masuk untuk melanjutkan ke Marketplace Sekolah</p>
+    
+     @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
 
-    <form>
-      <div class="mb-3 text-start">
+   <form action="{{ route('login') }}" method="POST">
+    @csrf
+
+    <div class="mb-3 text-start">
         <label class="form-label">Username</label>
-        <input type="username" class="form-control" placeholder="Masukkan Username Anda" required />
-      </div>
+        <input type="text" name="username" class="form-control" placeholder="Masukkan Username Anda" required />
+    </div>
 
-      <div class="mb-3 text-start">
+    <div class="mb-3 text-start">
         <label class="form-label">Kata Sandi</label>
-        <input type="password" class="form-control" placeholder="Masukkan kata sandi" required />
-      </div>
+        <input type="password" name="password" class="form-control" placeholder="Masukkan kata sandi" required />
+    </div>
 
-      <button type="submit" class="btn btn-login w-100 mt-3">
+    <button type="submit" class="btn btn-login w-100 mt-3">
         <i class="fa-solid fa-right-to-bracket me-2"></i> Login
-      </button>
+    </button>
 
-      <p class="text-muted mt-4">
+    <p class="text-muted mt-4">
         Belum punya akun?
-        <a href="/registrasi">Daftar Sekarang</a>
-      </p>
-    </form>
+        <a href="{{ route('register') }}">Daftar Sekarang</a>
+    </p>
+</form>
+
   </div>
 
   <!-- Bootstrap JS -->

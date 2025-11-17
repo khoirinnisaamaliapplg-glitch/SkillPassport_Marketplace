@@ -110,14 +110,23 @@
       <ul class="nav flex-column">
         <li class="nav-item"><a href="/member/dashboard" class="nav-link active"><i class="fa-solid fa-house me-2"></i> Dashboard</a></li>
         <li class="nav-item"><a href="/member/toko" class="nav-link"><i class="fa-solid fa-store me-2"></i> Toko Saya</a></li>
-        <li class="nav-item"><a href="/member/produk" class="nav-link"><i class="fa-solid fa-box me-2"></i> Produk</a></li>
+        <li class="nav-item">
+            <a href="{{ route('member.produk') }}" class="nav-link">
+                <i class="fa-solid fa-box me-2"></i> Produk
+            </a>
+        </li>
+
         <li class="nav-item"><a href="/member/profil" class="nav-link"><i class="fa-solid fa-user me-2"></i> Profil</a></li>
 
         <li class="nav-item mt-3 border-top pt-2">
-          <a href="/logout" class="nav-link text-danger">
-            <i class="fa-solid fa-right-from-bracket me-2"></i>
-            Logout
+          <a href="#" class="nav-link text-danger"
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
           </a>
+
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+              @csrf
+          </form>
         </li>
       </ul>
     </div>
