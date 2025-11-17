@@ -14,13 +14,13 @@ class ProductController extends Controller
     {
         $products = Product::where('id_user', Auth::id())->get();
 
-        return view('member.produk.index', compact('products'));
+        return view('member.produk', compact('products'));
     }
 
    
     public function create()
     {
-        return view('member.produk.create');
+        return view('member.produk-create');
     }
 
     public function store(Request $request)
@@ -63,7 +63,7 @@ class ProductController extends Controller
     {
         $product = Product::where('id_user', Auth::id())->findOrFail($id);
 
-        return view('member.produk.edit', compact('product'));
+        return view('member.produk-edit', compact('product'));
     }
 
    
