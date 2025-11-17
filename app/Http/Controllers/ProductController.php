@@ -2,241 +2,122 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
-class UserController extends Controller
+class ProductController extends Controller
 {
-    // ============================
-    // REGISTER
-    // ============================
-
-    public function registerForm()
+   
+    public function index()
     {
-        return view('auth.registrasi');
+        $products = Product::where('id_user', Auth::id())->get();
+
+        return view('member.produk.index', compact('products'));
     }
 
-    public function register(Request $request)
-    {
-        $request->validate([
-            'nama' => 'required',
-            'kontak' => 'nullable',
-            'username' => 'required|unique:users,username',
-            'password' => 'required|min:6',
-            'role' => 'required|in:admin,member',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
-        ]);
-
-        $filename = null;
-
-        if ($request->hasFile('foto')) {
-            $filename = $request->file('foto')->hashName();
-            $request->file('foto')->store('profil', 'public');
-        }
-
-        User::create([
-            'nama' => $request->nama,
-            'kontak' => $request->kontak,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-            'foto' => $filename
-        ]);
-
-        return redirect()->route('login')->with('success', 'Registrasi berhasil!');
-    }
-
-    // ============================
-    // LOGIN
-    // ============================
-
-    public function loginForm()
-    {
-        return view('auth.login');
-    }
-
-    public function login(Request $request)
-    {
-        $request->validate([
-            'username' => 'required',
-            'password' => 'required',
-        ]);
-
-        if (Auth::attempt($request->only('username', 'password'))) {
-
-            if (Auth::user()->role === 'admin') {
-                return redirect()->route('admin.dashboard');
-            } else {
-                return redirect()->route('member.dashboard');
-            }
-        }
-
-        return back()->with('error', 'Username atau password salah!');
-    }
-
-    public function logout()
-    {
-        Auth::logout();
-        return redirect()->route('login');
-    }
-
-    // ============================
-    // ADMIN - CREATE USER
-    // ============================
-
+   
     public function create()
     {
-        return view('admin.User-create');
+        return view('member.produk.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required',
-            'kontak' => 'nullable',
-            'username' => 'required|unique:users,username',
-            'password' => 'required|min:6',
-            'role' => 'required|in:admin,member',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'nama_produk' => 'required|string|max:100',
+            'harga'       => 'required|numeric',
+            'stok'        => 'required|numeric',
+            'deskripsi'   => 'nullable|string',
+            'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $filename = null;
+        $product = new Product();
+        $product->nama_produk = $request->nama_produk;
+        $product->harga       = $request->harga;
+        $product->stok        = $request->stok;
+        $product->deskripsi   = $request->deskripsi;
+        $product->id_user     = Auth::id();
 
-        if ($request->hasFile('foto')) {
-            $filename = $request->file('foto')->hashName();
-            $request->file('foto')->store('profil', 'public');
-        }
-
-        User::create([
-            'nama' => $request->nama,
-            'kontak' => $request->kontak,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-            'foto' => $filename,
-        ]);
-
-        return redirect()->route('admin.User')->with('success', 'User baru berhasil ditambahkan!');
-    }
-
-    // ============================
-    // ADMIN - DATA USER
-    // ============================
-
-    public function index()
-    {
-        $users = User::all();
-        return view('admin.User', compact('users'));
-    }
-
-    public function edit($id_user)
-    {
-        $user = User::findOrFail($id_user);
-        return view('admin.User-edit', compact('user'));
-    }
-
-    public function update(Request $request, $id_user)
-    {
-        $request->validate([
-            'nama' => 'required',
-            'kontak' => 'nullable',
-            'username' => 'required|unique:users,username,' . $id_user . ',id_user',
-            'role' => 'required|in:admin,member',
-            'password' => 'nullable|min:6',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
-        ]);
-
-        $user = User::findOrFail($id_user);
-
-        $user->nama = $request->nama;
-        $user->kontak = $request->kontak;
-        $user->username = $request->username;
-        $user->role = $request->role;
-
-        if ($request->password) {
-            $user->password = Hash::make($request->password);
-        }
-
+       
         if ($request->hasFile('foto')) {
 
-            if ($user->foto && file_exists(storage_path('app/public/profil/' . $user->foto))) {
-                unlink(storage_path('app/public/profil/' . $user->foto));
-            }
+            // nama file unik
+            $fileName = $request->file('foto')->hashName();
 
-            $filename = $request->file('foto')->hashName();
-            $request->file('foto')->store('profil', 'public');
+            // simpan ke storage/app/public/produk
+            $request->file('foto')->store('produk', 'public');
 
-            $user->foto = $filename;
+            $product->foto = $fileName;
         }
 
-        $user->save();
+        $product->save();
 
-        return redirect()->route('admin.User')->with('success', 'Data user berhasil diperbarui!');
+        return redirect()->route('member.produk.index')
+                         ->with('success', 'Produk berhasil ditambahkan!');
     }
 
-    public function destroy($id_user)
+  
+    public function edit($id)
     {
-        $user = User::findOrFail($id_user);
+        $product = Product::where('id_user', Auth::id())->findOrFail($id);
 
-        if ($user->foto && file_exists(storage_path('app/public/profil/' . $user->foto))) {
-            unlink(storage_path('app/public/profil/' . $user->foto));
-        }
-
-        $user->delete();
-
-        return redirect()->route('admin.User')->with('success', 'User berhasil dihapus!');
+        return view('member.produk.edit', compact('product'));
     }
 
-    // ============================
-    // MEMBER PROFIL
-    // ============================
-
-    public function memberProfile()
+   
+    public function update(Request $request, $id)
     {
-        $user = auth()->user();
-        return view('member.profil', compact('user'));
-    }
-
-    public function memberProfileEdit()
-    {
-        $user = auth()->user();
-        return view('member.profil-edit', compact('user'));
-    }
-
-    public function memberProfileUpdate(Request $request)
-    {
-        $user = auth()->user();
+        $product = Product::where('id_user', Auth::id())->findOrFail($id);
 
         $request->validate([
-            'nama' => 'required|string|max:100',
-            'username' => 'required|string|max:50',
-            'kontak' => 'nullable|string|max:20',
-            'alamat' => 'nullable|string',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'nama_produk' => 'required|string|max:100',
+            'harga'       => 'required|numeric',
+            'stok'        => 'required|numeric',
+            'deskripsi'   => 'nullable|string',
+            'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $user->nama = $request->nama;
-        $user->username = $request->username;
-        $user->kontak = $request->kontak;
-        $user->alamat = $request->alamat;
+        $product->nama_produk = $request->nama_produk;
+        $product->harga       = $request->harga;
+        $product->stok        = $request->stok;
+        $product->deskripsi   = $request->deskripsi;
 
+        
         if ($request->hasFile('foto')) {
 
-            if ($user->foto && file_exists(storage_path('app/public/profil/' . $user->foto))) {
-                unlink(storage_path('app/public/profil/' . $user->foto));
+            // hapus foto lama dari storage
+            if ($product->foto && Storage::disk('public')->exists('produk/' . $product->foto)) {
+                Storage::disk('public')->delete('produk/' . $product->foto);
             }
 
-            $filename = $request->file('foto')->hashName();
-            $request->file('foto')->store('profil', 'public');
+            // simpan foto baru
+            $fileName = $request->file('foto')->hashName();
+            $request->file('foto')->store('produk', 'public');
 
-            $user->foto = $filename;
+            $product->foto = $fileName;
         }
 
-        $user->save();
+        $product->save();
 
-        return redirect()->route('member.profil')->with('success', 'Profil berhasil diperbarui!');
+        return redirect()->route('member.produk.index')
+                         ->with('success', 'Produk berhasil diperbarui!');
     }
 
+    
+    public function destroy($id)
+    {
+        $product = Product::where('id_user', Auth::id())->findOrFail($id);
+
+        // hapus foto dari storage
+        if ($product->foto && Storage::disk('public')->exists('produk/' . $product->foto)) {
+            Storage::disk('public')->delete('produk/' . $product->foto);
+        }
+
+        $product->delete();
+
+        return redirect()->route('member.produk.index')
+                         ->with('success', 'Produk berhasil dihapus!');
+    }
 }
