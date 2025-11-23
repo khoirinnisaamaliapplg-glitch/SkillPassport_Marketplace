@@ -81,20 +81,21 @@
   <div class="dashboard-card users">
     <div class="icon">👤</div>
     <h5>Total Produk Saya</h5>
-    <h3>10</h3>
+    <h3>{{ $totalProduk }}</h3>
   </div>
 
   <div class="dashboard-card produk">
     <div class="icon">🏪</div>
     <h5>Toko Saya</h5>
-    <h3>1</h3>
+    <h3>{{ $totalToko }}</h3>
   </div>
 
   <div class="dashboard-card toko">
     <div class="icon">📦</div>
     <h5>Produk Terjual</h5>
-    <h3>45</h3>
+    <h3>{{ $produkTerjual }}</h3>
   </div>
 </div>
+
 
 @endsection

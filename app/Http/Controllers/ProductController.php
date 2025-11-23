@@ -2,122 +2,159 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Models\Kategori;
+use App\Models\Toko;
+use App\Models\GambarProduct;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-   
+    // Tampilkan semua produk
     public function index()
     {
-        $products = Product::where('id_user', Auth::id())->get();
+       $produks = Product::with(['gambars', 'toko'])
+            ->where('id_user', auth()->id())
+            ->get();
 
-        return view('member.produk', compact('products'));
+        return view('member.produk', compact('produks'));
     }
 
-   
+    // Form buat produk baru
     public function create()
     {
-        return view('member.produk-create');
+        $kategoris = Kategori::all();
+        $tokos = Toko::all();   
+        return view('member.produk-create', compact('kategoris','tokos'));
     }
 
+    // SIMPAN PRODUK BARU
     public function store(Request $request)
     {
         $request->validate([
             'nama_produk' => 'required|string|max:100',
-            'harga'       => 'required|numeric',
-            'stok'        => 'required|numeric',
-            'deskripsi'   => 'nullable|string',
-            'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'id_kategori' => 'required|integer',
+            'id_toko' => 'required|integer',
+            'harga' => 'required|integer',
+            'stok' => 'required|integer',
+            'deskripsi' => 'nullable|string',
+            'gambar.*' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
-        $product = new Product();
-        $product->nama_produk = $request->nama_produk;
-        $product->harga       = $request->harga;
-        $product->stok        = $request->stok;
-        $product->deskripsi   = $request->deskripsi;
-        $product->id_user     = Auth::id();
+        // WAJIB: Tambahkan id_user
+        $product = Product::create([
+            'id_kategori' => $request->id_kategori,
+            'id_toko' => $request->id_toko,
+            'id_user' => Auth::id(),      // ← FIX DI SINI
+            'nama_produk' => $request->nama_produk,
+            'harga' => $request->harga,
+            'stok' => $request->stok,
+            'deskripsi' => $request->deskripsi,
+            'tanggal_upload' => now()
+        ]);
 
-       
-        if ($request->hasFile('foto')) {
+        // Upload banyak gambar
+        if ($request->hasFile('gambar')) {
+            foreach ($request->file('gambar') as $file) {
+                $filename = time().'_'.$file->getClientOriginalName();
+                $file->move(public_path('uploads/produk'), $filename);
 
-            // nama file unik
-            $fileName = $request->file('foto')->hashName();
-
-            // simpan ke storage/app/public/produk
-            $request->file('foto')->store('produk', 'public');
-
-            $product->foto = $fileName;
+                GambarProduct::create([
+                    'id_produk' => $product->id_produk,
+                    'nama_gambar' => $filename
+                ]);
+            }
         }
 
-        $product->save();
-
-        return redirect()->route('member.produk.index')
-                         ->with('success', 'Produk berhasil ditambahkan!');
+        return redirect()->route('member.produk')
+            ->with('success', 'Produk berhasil ditambahkan!');
     }
 
-  
+    // FORM EDIT
     public function edit($id)
     {
-        $product = Product::where('id_user', Auth::id())->findOrFail($id);
-
+        $product = Product::with('gambars')->findOrFail($id);
         return view('member.produk-edit', compact('product'));
     }
 
-   
+    // UPDATE PRODUK
     public function update(Request $request, $id)
     {
-        $product = Product::where('id_user', Auth::id())->findOrFail($id);
-
         $request->validate([
             'nama_produk' => 'required|string|max:100',
-            'harga'       => 'required|numeric',
-            'stok'        => 'required|numeric',
-            'deskripsi'   => 'nullable|string',
-            'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'id_kategori' => 'required|integer',
+            'id_toko' => 'required|integer',
+            'harga' => 'required|integer',
+            'stok' => 'required|integer',
+            'deskripsi' => 'nullable|string',
+            'gambar.*' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
-        $product->nama_produk = $request->nama_produk;
-        $product->harga       = $request->harga;
-        $product->stok        = $request->stok;
-        $product->deskripsi   = $request->deskripsi;
+        $product = Product::findOrFail($id);
 
-        
-        if ($request->hasFile('foto')) {
+        $product->update([
+            'id_kategori' => $request->id_kategori,
+            'id_toko' => $request->id_toko,
+            'id_user' => Auth::id(),      // ← FIX SAMA SINI
+            'nama_produk' => $request->nama_produk,
+            'harga' => $request->harga,
+            'stok' => $request->stok,
+            'deskripsi' => $request->deskripsi
+        ]);
 
-            // hapus foto lama dari storage
-            if ($product->foto && Storage::disk('public')->exists('produk/' . $product->foto)) {
-                Storage::disk('public')->delete('produk/' . $product->foto);
+        // Upload gambar baru
+        if ($request->hasFile('gambar')) {
+            foreach ($request->file('gambar') as $file) {
+                $filename = time().'_'.$file->getClientOriginalName();
+                $file->move(public_path('uploads/produk'), $filename);
+
+                GambarProduct::create([
+                    'id_produk' => $product->id_produk,
+                    'nama_gambar' => $filename
+                ]);
             }
-
-            // simpan foto baru
-            $fileName = $request->file('foto')->hashName();
-            $request->file('foto')->store('produk', 'public');
-
-            $product->foto = $fileName;
         }
 
-        $product->save();
-
-        return redirect()->route('member.produk.index')
-                         ->with('success', 'Produk berhasil diperbarui!');
+        return redirect()->route('member.produk')
+            ->with('success','Produk berhasil diperbarui!');
     }
 
-    
+    // HAPUS PRODUK
     public function destroy($id)
     {
-        $product = Product::where('id_user', Auth::id())->findOrFail($id);
+        $product = Product::with('gambars')->findOrFail($id);
 
-        // hapus foto dari storage
-        if ($product->foto && Storage::disk('public')->exists('produk/' . $product->foto)) {
-            Storage::disk('public')->delete('produk/' . $product->foto);
+        foreach ($product->gambars as $gambar) {
+            $path = public_path('uploads/produk/'.$gambar->nama_gambar);
+            if (file_exists($path)) {
+                unlink($path);
+            }
+            $gambar->delete();
         }
 
         $product->delete();
 
-        return redirect()->route('member.produk.index')
-                         ->with('success', 'Produk berhasil dihapus!');
+        return redirect()->route('member.produk')
+            ->with('success','Produk berhasil dihapus!');
+    }
+     public function adminIndex(Request $request)
+    {
+        $query = Product::with(['gambars', 'kategori', 'toko']);
+
+    // Filter kategori
+    if ($request->kategori_id) {
+        $query->where('id_kategori', $request->kategori_id);
+    }
+
+    // Search produk berdasarkan nama
+    if ($request->search) {
+        $query->where('nama_produk', 'like', '%'.$request->search.'%');
+    }
+
+    $produks = $query->get();
+    $kategoris = Kategori::all();
+
+    return view('admin.produk', compact('produks', 'kategoris'));
     }
 }

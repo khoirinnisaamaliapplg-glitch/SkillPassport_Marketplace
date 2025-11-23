@@ -11,6 +11,7 @@ class Product extends Model
     protected $fillable = [
         'id_kategori',
         'id_toko',
+        'id_user',        // ← WAJIB TAMBAH INI
         'nama_produk',
         'deskripsi',
         'harga',
@@ -32,4 +33,5 @@ class Product extends Model
     {
         return $this->belongsTo(Kategori::class, 'id_kategori', 'id_kategori');
     }
+    
 }

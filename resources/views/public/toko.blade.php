@@ -11,14 +11,25 @@
 
   <div class="row g-4">
 
-    <!-- TOKO MAKANAN -->
+    @foreach($toko as $item)
     <div class="col-md-3">
-      <a href="/toko/makanan" class="text-decoration-none text-dark">
+      <a href="{{ url('/toko/'.$item->id_toko) }}" class="text-decoration-none text-dark">
         <div class="card produk-card">
-          <img src="/image/toko-makanan.jpg" class="card-img-top" style="height:170px; object-fit:cover;">
+
+          {{-- GAMBAR TOKO --}}
+          <img 
+            src="{{ asset('storage/toko/'.$item->gambar) }}" 
+            class="card-img-top"
+            style="height:170px; object-fit:cover;"
+            onerror="this.src='/image/default-toko.jpg'"
+          >
+
           <div class="card-body text-center">
-            <h6 class="fw-bold">Toko Makanan Lezat</h6>
-            <p class="text-muted small mb-2">Aneka makanan rumahan & snack kekinian</p>
+            <h6 class="fw-bold">{{ $item->nama_toko }}</h6>
+
+            <p class="text-muted small mb-2">
+              {{ $item->deskripsi ?? 'Toko ini belum memiliki deskripsi' }}
+            </p>
 
             <button class="btn btn-beli btn-sm rounded-pill px-3">
               <i class="fa-solid fa-store me-1"></i> Kunjungi
@@ -27,40 +38,7 @@
         </div>
       </a>
     </div>
-
-    <!-- TOKO MINUMAN -->
-    <div class="col-md-3">
-      <a href="/toko/minuman" class="text-decoration-none text-dark">
-        <div class="card produk-card">
-          <img src="/image/toko-minuman.jpg" class="card-img-top" style="height:170px; object-fit:cover;">
-          <div class="card-body text-center">
-            <h6 class="fw-bold">Toko Minuman Segar</h6>
-            <p class="text-muted small mb-2">Minuman dingin, kopi, & jus segar</p>
-
-            <button class="btn btn-beli btn-sm rounded-pill px-3">
-              <i class="fa-solid fa-store me-1"></i> Kunjungi
-            </button>
-          </div>
-        </div>
-      </a>
-    </div>
-
-    <!-- TOKO FASHION -->
-    <div class="col-md-3">
-      <a href="/toko/fashion" class="text-decoration-none text-dark">
-        <div class="card produk-card">
-          <img src="/image/toko-fashion.jpg" class="card-img-top" style="height:170px; object-fit:cover;">
-          <div class="card-body text-center">
-            <h6 class="fw-bold">Toko Fashion</h6>
-            <p class="text-muted small mb-2">Aksesoris, pakaian, & perlengkapan keren</p>
-
-            <button class="btn btn-beli btn-sm rounded-pill px-3">
-              <i class="fa-solid fa-store me-1"></i> Kunjungi
-            </button>
-          </div>
-        </div>
-      </a>
-    </div>
+    @endforeach
 
   </div>
 </div>

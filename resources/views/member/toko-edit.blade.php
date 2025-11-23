@@ -94,15 +94,21 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Gambar Toko</label>
-            @if($toko->gambar)
-                <div>
-                    <img src="{{ asset('uploads/toko/' . $toko->gambar) }}" alt="Gambar Toko" class="img-preview">
-                </div>
-            @endif
-            <input type="file" name="gambar" class="form-control">
-            <small>Biarkan kosong jika tidak ingin mengganti gambar.</small>
+    <label class="form-label">Gambar Toko</label>
+
+    @if($toko->gambar)
+        <div class="mb-2">
+            <img src="{{ asset('storage/toko/' . $toko->gambar) }}" 
+                 alt="Gambar Toko" 
+                 class="img-preview" 
+                 style="width:120px; height:120px; object-fit:cover; border-radius:10px; border:2px solid #2cce75;">
         </div>
+    @endif
+
+    <input type="file" name="gambar" class="form-control">
+    <small class="text-muted">Biarkan kosong jika tidak ingin mengganti gambar.</small>
+</div>
+
 
         <div class="d-flex justify-content-between mt-4">
             <a href="{{ route('member.toko') }}" class="btn-back">Kembali</a>

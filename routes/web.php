@@ -5,20 +5,16 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TokoController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\HomeController;
 
+Route::get('/', [HomeController::class, 'index'])->name('public.ladingpage');
 
-Route::get('/', function () {
-    return view('public.ladingpage');
-});
-Route::get('/produk', function () {
-    return view('public.produk');
-});
-Route::get('/detail', function () {
-    return view('public.detail');
-});
-Route::get('/toko', function () {
-    return view('public.toko');
-});
+Route::get('/produk', [HomeController::class, 'produk'])->name('produk');
+
+Route::get('/produk/{id}', [HomeController::class, 'detail'])->name('produk.detail');
+
+Route::get('/toko', [HomeController::class, 'toko'])->name('toko');
+
 
 // FORM LOGIN & REGISTER
 Route::get('/login', [UserController::class, 'loginForm'])->name('login');

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Product;
+use App\Models\Toko;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -116,12 +118,30 @@ public function store(Request $request)
 
     public function adminDashboard()
     {
-        return view('admin.dashboard');
+        
+        // Hitung total dari database
+        $totalUsers = User::count();
+        $totalProduk = Product::count();
+        $totalToko = Toko::count();
+
+        return view('admin.dashboard', compact('totalUsers', 'totalProduk', 'totalToko'));
+    
     }
 
     public function memberDashboard()
     {
-        return view('member.dashboard');
+         $userId = auth()->id();
+
+    // Total produk milik user
+    $totalProduk = \App\Models\Product::where('id_user', $userId)->count();
+
+    // Total toko milik user
+    $totalToko = \App\Models\Toko::where('id_user', $userId)->count();
+
+    // Karena belum ada tabel transaksi → sementara isi 0
+    $produkTerjual = 0;
+
+    return view('member.dashboard', compact('totalProduk', 'totalToko', 'produkTerjual'));
     }
 
    // ============================

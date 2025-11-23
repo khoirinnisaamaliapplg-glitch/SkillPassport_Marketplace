@@ -72,6 +72,14 @@
         color: #fff;
     }
 
+    /* CSS untuk ukuran foto toko */
+    .img-toko {
+        width: 80px;       /* Lebar maksimal gambar */
+        height: 80px;      /* Tinggi maksimal gambar */
+        object-fit: cover; /* Memastikan gambar proporsional */
+        border-radius: 8px; /* Sudut gambar membulat */
+    }
+
     @media (max-width: 576px) {
         th, td {
             font-size: 14px;
@@ -83,35 +91,46 @@
 <div class="table-card">
     <h2>Toko Saya</h2>
 
-    @if($toko)
-        <table>
-            <thead>
-                <tr>
-                    <th>Nama Toko</th>
-                    <th>Deskripsi</th>
-                    <th>Alamat</th>
-                    <th>Kontak</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ $toko->nama_toko }}</td>
-                    <td>{{ $toko->deskripsi ?? '-' }}</td>
-                    <td>{{ $toko->alamat ?? '-' }}</td>
-                    <td>{{ $toko->kontak_toko ?? '-' }}</td>
-                    <td>
-                        <a href="{{ route('member.toko.edit', $toko->id_toko) }}">
-                            <button class="btn-edit">Edit</button>
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    @else
-        <p>Anda belum memiliki toko.</p>
-        <a href="{{ route('member.toko.create') }}" class="btn-create">Buat Toko</a>
-    @endif
+
+@if($toko)
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Toko</th>
+                <th>Deskripsi</th>
+                <th>Alamat</th>
+                <th>Kontak</th>
+                <th>Foto</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ $toko->nama_toko }}</td>
+                <td>{{ $toko->deskripsi ?? '-' }}</td>
+                <td>{{ $toko->alamat ?? '-' }}</td>
+                <td>{{ $toko->kontak_toko ?? '-' }}</td>
+                <td>
+                    @if($toko->gambar)
+                        <img src="{{ asset('storage/toko/'.$toko->gambar) }}" class="img-toko">
+                    @else
+                        <img src="https://via.placeholder.com/80" class="img-toko">
+                    @endif
+                </td>
+                <td>
+                    <a href="{{ route('member.toko.edit', $toko->id_toko) }}">
+                        <button class="btn-edit">Edit</button>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+@else
+    <p>Anda belum memiliki toko.</p>
+    <a href="{{ route('member.toko.create') }}" class="btn-create">Buat Toko</a>
+@endif
+
+
 </div>
 
 @endsection

@@ -25,6 +25,7 @@
 
   .produk-card img {
     height: 180px;
+    width: 100%;
     object-fit: cover;
   }
 
@@ -55,86 +56,45 @@
     <i class="fa-solid fa-store"></i> Produk Sesuai Toko
   </h2>
 
+  @foreach($tokos as $toko)
 
-  <!-- ======================================================
-      TOKO 1 : Toko Makanan Lezat
-  ======================================================= -->
-  <h4 class="judul-toko">🍽️ Toko Makanan Lezat</h4>
+    <!-- Judul toko -->
+    <h4 class="judul-toko">
+      {{ $toko->nama_toko }}
+    </h4>
 
-  <div class="row g-4 mt-2">
+    <div class="row g-4 mt-2">
 
-    <div class="col-md-3">
-    <a href="/detail" class="text-decoration-none text-dark">
-    <div class="card produk-card">
-      <img src="/image/nasgor.jpg" class="card-img-top">
-      <div class="card-body text-center">
-        <h6 class="fw-bold">Nasi Goreng Spesial</h6>
-        <p class="text-muted mb-2">Rp 20.000</p>
+      @forelse($toko->produks as $produk)
+        <div class="col-md-3">
+          <div class="card produk-card">
 
-        <div class="btn btn-beli btn-sm rounded-pill px-3">
-          <i class="fa-brands fa-whatsapp me-1"></i>Beli
+            {{-- Gambar produk (ambil gambar pertama) --}}
+            @if(count($produk->gambars) > 0)
+              <img src="{{ asset('uploads/produk/'.$produk->gambars[0]->nama_gambar) }}">
+            @else
+              <img src="/image/no-image.jpg">
+            @endif
+
+            <div class="card-body text-center">
+              <h6 class="fw-bold">{{ $produk->nama_produk }}</h6>
+              <p class="text-muted mb-2">Rp {{ number_format($produk->harga, 0, ',', '.') }}</p>
+
+              <a href="https://wa.me/{{ $toko->no_wa }}?text=Saya ingin membeli {{ $produk->nama_produk }}"
+                 class="btn btn-beli btn-sm rounded-pill px-3">
+                <i class="fa-brands fa-whatsapp me-1"></i>Beli
+              </a>
+            </div>
+
+          </div>
         </div>
-      </div>
-    </div>
-    </a>
-    </div>
+      @empty
+        <p class="text-muted ms-3">Belum ada produk di toko ini.</p>
+      @endforelse
 
-
-    <div class="col-md-3">
-      <div class="card produk-card">
-        <img src="/image/snack.jpg">
-        <div class="card-body text-center">
-          <h6 class="fw-bold">Snack Kering</h6>
-          <p class="text-muted mb-2">Rp 10.000</p>
-          <a href="https://wa.me/6281234567890?text=Saya ingin beli Snack Kering"
-             class="btn btn-beli btn-sm rounded-pill px-3">
-            <i class="fa-brands fa-whatsapp me-1"></i>Beli
-          </a>
-        </div>
-      </div>
     </div>
 
-  </div>
-
-
-
-
-  <!-- ======================================================
-      TOKO 2 : Toko Minuman Segar
-  ======================================================= -->
-  <h4 class="judul-toko">🥤 Toko Minuman Segar</h4>
-
-  <div class="row g-4 mt-2">
-
-    <div class="col-md-3">
-      <div class="card produk-card">
-        <img src="/image/jus.jpg">
-        <div class="card-body text-center">
-          <h6 class="fw-bold">Jus Buah Segar</h6>
-          <p class="text-muted mb-2">Rp 12.000</p>
-          <a href="https://wa.me/6281234567890?text=Saya ingin beli Jus Buah Segar"
-             class="btn btn-beli btn-sm rounded-pill px-3">
-            <i class="fa-brands fa-whatsapp me-1"></i>Beli
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card produk-card">
-        <img src="/image/kopi.jpg">
-        <div class="card-body text-center">
-          <h6 class="fw-bold">Kopi Susu</h6>
-          <p class="text-muted mb-2">Rp 15.000</p>
-          <a href="https://wa.me/6281234567890?text=Saya ingin beli Kopi Susu"
-             class="btn btn-beli btn-sm rounded-pill px-3">
-            <i class="fa-brands fa-whatsapp me-1"></i>Beli
-          </a>
-        </div>
-      </div>
-    </div>
-
-  </div>
+  @endforeach
 
 </div>
 

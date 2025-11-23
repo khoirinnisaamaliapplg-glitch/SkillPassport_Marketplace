@@ -10,17 +10,21 @@ return new class extends Migration
     {
         Schema::create('produk', function (Blueprint $table) {
             $table->id('id_produk'); // Primary key
+            
+            $table->unsignedBigInteger('id_user'); // <-- DITAMBAHKAN DI SINI
+            
             $table->unsignedBigInteger('id_kategori'); // Foreign key kategori
             $table->string('nama_produk', 100);
             $table->integer('harga');
             $table->integer('stok');
             $table->text('deskripsi')->nullable();
-            $table->date('tanggal_upload');
+            $table->date('tanggal_upload')->nullable();
             $table->unsignedBigInteger('id_toko'); // Foreign key toko
             $table->timestamps();
 
-            // Optional: tambah foreign key jika ada tabel kategori dan toko
-           $table->foreign('id_kategori')->references('id_kategori')->on('kategori')->onDelete('cascade');
+            // Foreign key
+            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
+            $table->foreign('id_kategori')->references('id_kategori')->on('kategori')->onDelete('cascade');
             $table->foreign('id_toko')->references('id_toko')->on('toko')->onDelete('cascade');
         });
     }

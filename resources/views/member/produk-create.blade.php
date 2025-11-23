@@ -65,46 +65,40 @@
     @endif
 
     <form action="{{ route('member.produk.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
+    @csrf
 
-        {{-- Nama Produk --}}
-        <label>Nama Produk</label>
-        <input type="text" name="nama_produk" class="form-control" required value="{{ old('nama_produk') }}">
+    <label>Nama Produk</label>
+    <input type="text" name="nama_produk" class="form-control" required value="{{ old('nama_produk') }}">
 
-        {{-- Kategori --}}
-        <label>Kategori</label>
-        <select name="id_kategori" class="form-control" required>
-            <option value="">-- Pilih Kategori --</option>
-            @foreach($kategoris as $kategori)
-                <option value="{{ $kategori->id_kategori }}" 
-                    {{ old('id_kategori') == $kategori->id_kategori ? 'selected' : '' }}>
-                    {{ $kategori->nama_kategori }}
-                </option>
-            @endforeach
-        </select>
+    <label>Kategori</label>
+    <select name="id_kategori" class="form-control" required>
+        <option value="">-- Pilih Kategori --</option>
+        @foreach($kategoris as $kategori)
+            <option value="{{ $kategori->id_kategori }}" 
+                {{ old('id_kategori') == $kategori->id_kategori ? 'selected' : '' }}>
+                {{ $kategori->nama_kategori }}
+            </option>
+        @endforeach
+    </select>
 
-        {{-- Toko otomatis (hidden) --}}
-        <input type="hidden" name="id_toko" value="{{ auth()->user()->toko->id_toko }}">
+    <input type="hidden" name="id_toko" value="{{ auth()->user()->toko->id_toko }}">
 
-        {{-- Harga --}}
-        <label>Harga</label>
-        <input type="number" name="harga" class="form-control" required value="{{ old('harga') }}">
+    <label>Harga</label>
+    <input type="number" name="harga" class="form-control" required value="{{ old('harga') }}">
 
-        {{-- Stok --}}
-        <label>Stok</label>
-        <input type="number" name="stok" class="form-control" required value="{{ old('stok') }}">
+    <label>Stok</label>
+    <input type="number" name="stok" class="form-control" required value="{{ old('stok') }}">
 
-        {{-- Deskripsi --}}
-        <label>Deskripsi</label>
-        <textarea name="deskripsi" class="form-control">{{ old('deskripsi') }}</textarea>
+    <label>Deskripsi</label>
+    <textarea name="deskripsi" class="form-control">{{ old('deskripsi') }}</textarea>
 
-        {{-- Gambar --}}
-        <label>Gambar Produk (bisa lebih dari 1)</label>
-        <input type="file" name="gambar[]" class="form-control" multiple>
+    <label>Gambar Produk (bisa lebih dari 1)</label>
+    <input type="file" name="gambar[]" class="form-control" multiple>
 
-        <button type="submit" class="btn-submit">Simpan Produk</button>
-        <a href="{{ route('member.produk') }}" class="btn-back">Kembali</a>
-    </form>
+    <button type="submit" class="btn-submit">Simpan Produk</button>
+    <a href="{{ route('member.produk') }}" class="btn-back">Kembali</a>
+</form>
+
 </div>
 
 @endsection

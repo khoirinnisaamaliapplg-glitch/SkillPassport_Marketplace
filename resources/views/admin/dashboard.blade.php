@@ -9,7 +9,7 @@
   .dashboard-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 20px;a
     margin-top: 20px;
   }
 
@@ -81,18 +81,21 @@
   <div class="dashboard-card users">
     <div class="icon">👤</div>
     <h5>Total Users</h5>
-    <h3>150</h3>
+    <h3>{{ $totalUsers }}</h3>
   </div>
+
   <div class="dashboard-card produk">
     <div class="icon">📦</div>
     <h5>Total Produk</h5>
-    <h3>87</h3>
+    <h3>{{ $totalProduk }}</h3>
   </div>
+
   <div class="dashboard-card toko">
     <div class="icon">🏪</div>
     <h5>Total Toko</h5>
-    <h3>25</h3>
+    <h3>{{ $totalToko }}</h3>
   </div>
 </div>
+
 
 @endsection

@@ -4,7 +4,6 @@
 
 @section('content')
 
-<!-- Hero Section -->
 <style>
 .hero-section-custom {
   height: 70vh;
@@ -17,40 +16,42 @@
   justify-content: center;
   color: white;
 }
-
 .hero-section-custom .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45); /* biar teks lebih jelas */
+  background: rgba(0, 0, 0, 0.45);
 }
-
 @keyframes gradientMove {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-
 .hero-title {
-  color: #81ef59; /* Hijau neon kamu */
+  color: #81ef59;
   text-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
-
 .hero-btn {
   background: #2cce75;
   border: none;
   color: #102863;
   font-weight: 600;
 }
-
 .hero-btn:hover {
   background: #81ef59;
   color: #0f2f63;
 }
+.product-card img {
+  height: 170px;
+  object-fit: cover;
+  border-radius: 8px;
+}
 </style>
 
+<!-- =========================== -->
+<!-- HERO SECTION -->
+<!-- =========================== -->
 <section class="hero-section-custom text-center">
   <div class="overlay"></div>
-  
   <div class="container position-relative">
     <h1 class="fw-bold display-5 mb-3 hero-title">
       Selamat Datang di Marketplace Sekolah
@@ -67,9 +68,9 @@
 </section>
 
 
-<!-- ======================== -->
-<!-- BAGIAN TOKO -->
-<!-- ======================== -->
+<!-- =========================== -->
+<!-- TOKO DINAMIS -->
+<!-- =========================== -->
 <section id="toko" class="container py-5">
   <h2 class="text-center mb-5 text-primary">
     <i class="fa-solid fa-shop"></i> Pilihan Toko
@@ -77,100 +78,86 @@
 
   <div class="row g-4 justify-content-center">
 
+    @forelse ($tokos as $toko)
     <div class="col-md-4 col-lg-3">
-      <div class="card store-card text-center shadow-sm">
-        <div class="card-body">
-          <i class="fa-solid fa-utensils fa-3x text-success mb-3"></i>
-          <h5 class="card-title fw-bold">Toko Makanan Lezat</h5>
-          <p class="text-muted">Aneka makanan rumahan & snack kekinian.</p>
-        </div>
-      </div>
-    </div>
+      <div class="card shadow-sm text-center h-100">
 
-    <div class="col-md-4 col-lg-3">
-      <div class="card store-card text-center shadow-sm">
+        {{-- LOGO TOKO (OPSIONAL) --}}
         <div class="card-body">
-          <i class="fa-solid fa-mug-hot fa-3x text-info mb-3"></i>
-          <h5 class="card-title fw-bold">Toko Minuman Segar</h5>
-          <p class="text-muted">Minuman dingin, kopi, dan jus buah segar.</p>
+          <i class="fa-solid fa-store fa-3x text-success mb-3"></i>
+
+          <h5 class="fw-bold">{{ $toko->nama_toko }}</h5>
+
+          <p class="text-muted">
+            {{ Str::limit($toko->deskripsi, 55) }}
+          </p>
         </div>
       </div>
     </div>
+    @empty
+      <p class="text-center text-muted">Belum ada toko terdaftar.</p>
+    @endforelse
 
   </div>
 </section>
 
-<!-- ======================== -->
-<!-- BAGIAN PRODUK -->
-<!-- ======================== -->
+
+<!-- =========================== -->
+<!-- PRODUK DINAMIS PER KATEGORI -->
+<!-- =========================== -->
 <section id="produk" class="container py-5">
   <h3 class="mb-5 text-center text-primary">
     <i class="fa-solid fa-bag-shopping"></i> Produk Sesuai Kategori
   </h3>
 
-  <!-- Makanan -->
-  <h5 class="mb-4 text-success fw-bold">🍽️ Toko Makanan Lezat</h5>
-  <div class="row g-4 mb-5">
+  @foreach ($kategoris as $kategori)
 
-    <div class="col-md-3">
-      <div class="card product-card border-0 shadow-sm h-100">
-        <img src="/image/nasgor.jpg" class="card-img-top" alt="Nasi Goreng" />
-        <div class="card-body text-center">
-          <h6 class="fw-semibold">Nasi Goreng Spesial</h6>
-          <p class="text-muted mb-3">Rp 20.000</p>
-          <a href="#" class="btn btn-success btn-sm px-3 rounded-pill">
-            <i class="fa-brands fa-whatsapp me-1"></i> Beli via WA
-          </a>
-        </div>
+    <h5 class="mb-4 text-success fw-bold">
+      🛍️ {{ $kategori->nama_kategori }}
+    </h5>
+
+    <div class="row g-4 mb-5">
+
+      @php
+        $produkKategori = $produks->where('id_kategori', $kategori->id_kategori);
+      @endphp
+
+      @if ($produkKategori->isEmpty())
+        <p class="text-muted ms-2">Belum ada produk pada kategori ini.</p>
+      @endif
+
+      @foreach ($produkKategori as $p)
+      <div class="col-md-3">
+  <a href="{{ route('produk.detail', $p->id_produk) }}" class="text-decoration-none text-dark">
+
+    <div class="card product-card border-0 shadow-sm h-100">
+
+      {{-- GAMBAR PRODUK --}}
+      @if($p->gambars->isNotEmpty())
+        <img src="{{ asset('uploads/produk/' . $p->gambars[0]->nama_gambar) }}"
+             class="card-img-top">
+      @else
+        <img src="https://via.placeholder.com/300" class="card-img-top">
+      @endif
+
+      <div class="card-body text-center">
+        <h6 class="fw-semibold">{{ $p->nama_produk }}</h6>
+
+        <p class="text-muted mb-3">
+          Rp {{ number_format($p->harga, 0, ',', '.') }}
+        </p>
       </div>
+
     </div>
 
-    <div class="col-md-3">
-      <div class="card product-card border-0 shadow-sm h-100">
-        <img src="/image/snack.jpg" class="card-img-top" alt="Snack" />
-        <div class="card-body text-center">
-          <h6 class="fw-semibold">Snack Kering</h6>
-          <p class="text-muted mb-3">Rp 10.000</p>
-          <a href="#" class="btn btn-success btn-sm px-3 rounded-pill">
-            <i class="fa-brands fa-whatsapp me-1"></i> Beli via WA
-          </a>
-        </div>
-      </div>
+  </a>
+</div>
+
+      @endforeach
+
     </div>
 
-  </div>
-
-  <!-- Minuman -->
-  <h5 class="mb-4 text-success fw-bold">🥤 Toko Minuman Segar</h5>
-  <div class="row g-4">
-
-    <div class="col-md-3">
-      <div class="card product-card border-0 shadow-sm h-100">
-        <img src="/image/jus.jpg" class="card-img-top" alt="Jus Buah" />
-        <div class="card-body text-center">
-          <h6 class="fw-semibold">Jus Buah Segar</h6>
-          <p class="text-muted mb-3">Rp 12.000</p>
-          <a href="#" class="btn btn-success btn-sm px-3 rounded-pill">
-            <i class="fa-brands fa-whatsapp me-1"></i> Beli via WA
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card product-card border-0 shadow-sm h-100">
-        <img src="/image/kopi.jpg" class="card-img-top" alt="Kopi" />
-        <div class="card-body text-center">
-          <h6 class="fw-semibold">Kopi Susu</h6>
-          <p class="text-muted mb-3">Rp 15.000</p>
-          <a href="#" class="btn btn-success btn-sm px-3 rounded-pill">
-            <i class="fa-brands fa-whatsapp me-1"></i> Beli via WA
-          </a>
-        </div>
-      </div>
-    </div>
-
-  </div>
+  @endforeach
 </section>
 
 @endsection
