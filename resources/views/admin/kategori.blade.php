@@ -6,25 +6,25 @@
 
 <style>
 
-  
     body {
         font-family: 'Inter', sans-serif;
     }
 
-    
+
     .header-custom {
-        background: linear-gradient(135deg, #102863, #1b3a8a);
+        background: #ffffff;
         padding: 25px;
-        border-radius: 12px;
-        color: white;
-        margin-bottom: 30px;
+        border-radius: 14px;
+        border: 1px solid #e5e7eb;
+        margin-bottom: 28px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.05);
         text-align: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
     .header-custom h1 {
         font-size: 26px;
         font-weight: 700;
+        color: #0f2f63;
         margin: 0;
     }
 
@@ -62,7 +62,7 @@
         font-size: 18px;
     }
 
-    
+
     .table-container {
         background: white;
         padding: 25px;
@@ -71,7 +71,7 @@
         box-shadow: 0 8px 20px rgba(0,0,0,0.05);
     }
 
-    
+
     .btn-add {
         background: #0f2f63;
         border: none;
@@ -90,7 +90,7 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
-   
+
     table {
         width: 100%;
         border-collapse: separate;
@@ -128,7 +128,7 @@
         color: #374151;
     }
 
-   
+
     .action-buttons {
         display: flex;
         align-items: center;
@@ -214,7 +214,7 @@
 
                         <a href="{{ route('admin.kategori.edit', $kategori->id_kategori) }}">
                             <button class="btn-edit">
-                                <span class="btn-icon">✏</span> Edit
+                                <span class="btn-icon"></span> Edit
                             </button>
                         </a>
 
@@ -223,7 +223,7 @@
                             @csrf
                             @method('DELETE')
                             <button class="btn-delete" onclick="return confirm('Yakin ingin hapus kategori ini?')">
-                                <span class="btn-icon">🗑</span> Hapus
+                                <span class="btn-icon"></span> Hapus
                             </button>
                         </form>
 
