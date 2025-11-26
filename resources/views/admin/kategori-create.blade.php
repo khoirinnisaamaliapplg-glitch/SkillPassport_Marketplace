@@ -1,86 +1,105 @@
 @extends('admin.template')
 
-@section('title', 'Tambah Kategori')
+@section('title', '')
 
 @section('content')
 
 <style>
+ 
     .card-form {
-        max-width: 500px;
-        margin: 40px auto;
-        padding: 30px;
-        background: #fff;
-        border-radius: 15px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        border-left: 8px solid #2cce75;
-        animation: fadeIn 0.5s ease-in-out;
+        max-width: 520px;
+        margin: 45px auto;
+        padding: 32px;
+        background: #ffffff;
+        border-radius: 18px;
+        border: 1px solid #e8e8e8;
+        box-shadow:
+            0 4px 8px rgba(0, 0, 0, 0.04),
+            0 10px 25px rgba(0, 0, 0, 0.06);
+        animation: fadeIn 0.45s ease;
     }
 
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+        from { opacity: 0; transform: translateY(18px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
 
     .card-form h3 {
         text-align: center;
         color: #102863;
         font-weight: 700;
+        font-size: 24px;
         margin-bottom: 25px;
     }
 
+
     .form-label {
         font-weight: 600;
-        color: #0f2f63;
+        color: #102863;
+        font-size: 15px;
+        margin-bottom: 6px;
     }
 
+
     .form-control {
-        border-radius: 50px;
-        border: 1px solid #ccc;
-        padding-left: 15px;
-        transition: all 0.3s ease;
-        height: 45px;
+        border-radius: 12px;
+        border: 1px solid #cfcfcf;
+        padding: 12px 14px;
+        transition: 0.25s ease;
+        font-size: 15px;
+        height: 48px;
     }
 
     .form-control:focus {
         border-color: #2cce75;
-        box-shadow: 0 0 6px rgba(44,206,117,0.4);
+        box-shadow: 0 0 6px rgba(44,206,117,0.35);
     }
+
 
     .btn-submit {
         background: #2cce75;
-        color: #fff;
-        font-weight: 600;
         border: none;
-        padding: 10px 25px;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: 0.3s;
-        margin-right: 10px;
+        color: white;
+        padding: 12px 28px;
+        font-weight: 600;
+        border-radius: 12px;
+        transition: 0.25s ease;
+        font-size: 15px;
     }
 
     .btn-submit:hover {
         background: #25b864;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(44,206,117,0.35);
     }
+
 
     .btn-back {
         background: #102863;
-        color: #fff;
-        padding: 10px 25px;
-        border-radius: 50px;
-        border: none;
+        color: white;
+        padding: 12px 28px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 15px;
         text-decoration: none;
+        transition: 0.25s ease;
         display: inline-block;
-        text-align: center;
-        transition: 0.3s;
     }
 
     .btn-back:hover {
-        background: #0f2f63;
-        color: #fff;
-        text-decoration: none;
+        background: #0d1f4c;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 38, 99, 0.35);
     }
 
-    .d-flex { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
+
+    .action-row {
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+        margin-top: 25px;
+    }
+
 </style>
 
 <div class="card-form">
@@ -91,10 +110,11 @@
 
         <div class="mb-3">
             <label class="form-label">Nama Kategori</label>
-            <input type="text" name="nama_kategori" class="form-control" placeholder="Masukkan nama kategori" required>
+            <input type="text" name="nama_kategori" class="form-control"
+                placeholder="Masukkan nama kategori..." required>
         </div>
 
-        <div class="d-flex">
+        <div class="action-row">
             <button type="submit" class="btn-submit">Simpan</button>
             <a href="{{ route('admin.kategori') }}" class="btn-back">Kembali</a>
         </div>

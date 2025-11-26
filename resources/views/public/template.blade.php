@@ -51,7 +51,6 @@
           <li class="nav-item"><a class="nav-link" href="/">Beranda</a></li>
           <li class="nav-item"><a class="nav-link" href="/toko">Toko</a></li>
           <li class="nav-item"><a class="nav-link" href="/produk">Produk</a></li>
-          <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
 
           <!-- Tombol Auth -->
           <li class="nav-item ms-3">

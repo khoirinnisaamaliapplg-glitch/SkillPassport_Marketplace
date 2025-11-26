@@ -1,79 +1,129 @@
 @extends('admin.template')
 
-@section('title', 'Data Toko')
+@section('title', '')
 
 @section('content')
 
 <style>
+    
     .header-custom {
-        background: #102863;
-        padding: 20px;
-        border-radius: 10px;
-        color: white;
-        margin-bottom: 25px;
-        text-align: center;
-        box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-    }
-
-    .table-container {
-        background: white;
-        padding: 20px;
+        background: linear-gradient(135deg, #102863, #1b3a8a);
+        padding: 25px;
         border-radius: 12px;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        border-left: 10px solid #2cce75;
+        color: white;
+        margin-bottom: 30px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
+    .header-custom h1 {
+        font-size: 26px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    
+    .table-container {
+        background: #ffffff;
+        padding: 25px;
+        border-radius: 14px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+        border: 1px solid #e6e9f0;
+    }
+
+   
     table {
         width: 100%;
-        border-collapse: collapse;
-        margin-top: 15px;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-top: 12px;
     }
 
     thead {
-        background: #0f2f63;
+        background: #102863;
         color: white;
     }
 
-    th, td {
+    thead th {
+        padding: 14px;
+        font-size: 14px;
+        font-weight: 600;
+        border-bottom: 2px solid #2cce75;
+        text-align: center;
+        letter-spacing: 0.3px;
+    }
+
+    tbody td {
         padding: 12px;
-        border-bottom: 1px solid #ddd;
-        text-align: left;
+        border-bottom: 1px solid #e9e9e9;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 14px;
     }
 
-    tbody tr:hover {
-        background: #81ef59;
-        transition: 0.2s;
+    tbody tr:hover td {
+        background: #f4fff2;
+        transition: .25s;
     }
 
-    .btn-add {
-        background: #2cce75;
-        border: none;
-        padding: 10px 20px;
-        color: white;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: bold;
-        margin-bottom: 15px;
+   
+    .img-toko {
+        width: 70px;
+        height: 70px;
+        border-radius: 10px;
+        object-fit: cover;
+        border: 2px solid #2cce75;
+        transition: .2s;
     }
 
+    .img-toko:hover {
+        transform: scale(1.08);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+   
     .btn-edit {
         background: #102863;
         color: white;
-        padding: 6px 12px;
+        padding: 7px 14px;
         border-radius: 6px;
         border: none;
-        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+        transition: .2s;
+    }
+
+    .btn-edit:hover {
+        background: #0c1f51;
     }
 
     .btn-delete {
         background: #d93030;
         color: white;
-        padding: 6px 12px;
+        padding: 7px 14px;
         border-radius: 6px;
         border: none;
-        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+        transition: .2s;
     }
 
+    .btn-delete:hover {
+        background: #bb2626;
+    }
+
+  
+    @media (max-width: 768px) {
+        thead th, tbody td {
+            font-size: 12px;
+            padding: 8px;
+        }
+
+        .img-toko {
+            width: 55px;
+            height: 55px;
+        }
+    }
 </style>
 
 <div class="header-custom">
@@ -82,44 +132,44 @@
 
 <div class="table-container">
 
-    
-
     <table>
         <thead>
-    <tr>
-        <th>ID Toko</th>
-        <th>Nama Toko</th>
-        <th>Deskripsi</th>
-        <th>Gambar</th>
-        <th>Kontak</th>
-        <th>Alamat</th>
-        <th>Nama Member</th> <!-- ganti dari ID User -->
-        {{-- <th>Aksi</th> --}}
-    </tr>
-</thead>
+            <tr>
+                <th>ID Toko</th>
+                <th>Nama Toko</th>
+                <th>Deskripsi</th>
+                <th>Gambar</th>
+                <th>Kontak</th>
+                <th>Alamat</th>
+                <th>Nama Member</th>
+               
+            </tr>
+        </thead>
 
-<tbody>
-    @foreach($tokos as $toko)
-    <tr>
-        <td>{{ $toko->id_toko }}</td>
-        <td>{{ $toko->nama_toko }}</td>
-        <td>{{ $toko->deskripsi }}</td>
-        <td>{{ $toko->gambar }}</td>
-        <td>{{ $toko->kontak_toko }}</td>
-        <td>{{ $toko->alamat }}</td>
-        <td>{{ $toko->user->nama }}</td> <!-- tampilkan nama member -->
-        {{-- <td>
-            <a href="{{ route('admin.toko.edit', $toko->id_toko) }}" class="btn-edit">Edit</a>
-            <form action="{{ route('admin.toko.destroy', $toko->id_toko) }}" method="POST" style="display:inline;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn-delete">Hapus</button>
-            </form>
-        </td> --}}
-    </tr>
-    @endforeach
-</tbody>
+        <tbody>
+            @foreach($tokos as $toko)
+            <tr>
+                <td>{{ $toko->id_toko }}</td>
+                <td>{{ $toko->nama_toko }}</td>
+                <td>{{ $toko->deskripsi }}</td>
 
+                <td>
+                    @if($toko->gambar)
+                        <img src="{{ asset('storage/toko/' . $toko->gambar) }}"
+                             class="img-toko">
+                    @else
+                        <img src="https://via.placeholder.com/70"
+                             class="img-toko">
+                    @endif
+                </td>
+
+                <td>{{ $toko->kontak_toko }}</td>
+                <td>{{ $toko->alamat }}</td>
+                <td>{{ $toko->user->nama }}</td>
+
+            </tr>
+            @endforeach
+        </tbody>
     </table>
 
 </div>

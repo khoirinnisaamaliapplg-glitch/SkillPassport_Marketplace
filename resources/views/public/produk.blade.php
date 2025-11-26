@@ -58,7 +58,7 @@
 
   @foreach($tokos as $toko)
 
-    <!-- Judul toko -->
+
     <h4 class="judul-toko">
       {{ $toko->nama_toko }}
     </h4>
@@ -80,9 +80,9 @@
               <h6 class="fw-bold">{{ $produk->nama_produk }}</h6>
               <p class="text-muted mb-2">Rp {{ number_format($produk->harga, 0, ',', '.') }}</p>
 
-              <a href="https://wa.me/{{ $toko->no_wa }}?text=Saya ingin membeli {{ $produk->nama_produk }}"
+              <a href="https://wa.me/6287753514067?text={{ urlencode('Halo, saya ingin beli ' . $produk->nama_produk) }}"
                  class="btn btn-beli btn-sm rounded-pill px-3">
-                <i class="fa-brands fa-whatsapp me-1"></i>Beli
+                <i class="fa-brands fa-whatsapp me-1"></i>Beli Lewat WhatsApp
               </a>
             </div>
 

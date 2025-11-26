@@ -62,7 +62,48 @@
         color: #0f2f63;
         font-size: 15px;
     }
+    .alert-box {
+        padding: 12px 18px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        font-size: 15px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        animation: fadeSlide 0.5s ease;
+    }
+
+    .success-alert {
+        background: #2cce75;
+        color: white;
+        border-left: 8px solid #1e9e5a;
+    }
+
+    .error-alert {
+        background: #d93030;
+        color: white;
+        border-left: 8px solid #a32323;
+    }
+
+    .alert-icon {
+        font-size: 20px;
+    }
 </style>
+@if (session('success'))
+    <div class="alert-box success-alert">
+        <span class="alert-icon">✔</span>
+        {{ session('success') }}
+    </div>
+@endif
+
+
+@if (session('error'))
+    <div class="alert-box error-alert">
+        <span class="alert-icon">⚠</span>
+        {{ session('error') }}
+    </div>
+@endif
 
 <div class="profile-container">
     

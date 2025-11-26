@@ -5,97 +5,127 @@
 @section('content')
 
 <style>
-  /* Container row */
+
+  /* ===== WRAPPER ===== */
+  .dashboard-wrap {
+    margin-top: 25px;
+    padding: 10px;
+  }
+
   .dashboard-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    margin-top: 20px;
+    gap: 22px;
   }
 
-  /* Card style */
+  /* ===== CARD STYLE PREMIUM ===== */
   .dashboard-card {
     flex: 1 1 30%;
-    background: linear-gradient(145deg, #f0fff5, #ffffff);
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    padding: 40px 20px;
+    padding: 35px 25px;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    box-shadow: 0 12px 28px rgba(0,0,0,0.10);
+    transition: 0.35s ease;
     text-align: center;
+
     position: relative;
-    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+  }
+
+  /* Lingkaran glow */
+  .dashboard-card::before {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(255,255,255,0.55), transparent);
+    top: -40px;
+    right: -40px;
+    filter: blur(25px);
+    opacity: .7;
   }
 
   .dashboard-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    transform: translateY(-10px);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.18);
   }
 
-  /* Card icon */
+  /* ===== ICON ===== */
   .dashboard-card .icon {
-    font-size: 40px;
-    margin-bottom: 15px;
-    color: #2cce75; /* Tosca */
-  }
+    height: 80px;
+    width: 80px;
+    margin: 0 auto 18px auto;
 
-  /* Card title */
-  .dashboard-card h5 {
-    font-size: 18px;
-    color: #0f2f63;
-    margin-bottom: 10px;
-    font-weight: 600;
-  }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  /* Card number */
-  .dashboard-card h3 {
+    border-radius: 22px;
     font-size: 38px;
+    color: #fff;
+  }
+
+  .icon.produk   { background: linear-gradient(135deg, #0f2f63, #4169e1); }
+  .icon.toko     { background: linear-gradient(135deg, #2cce75, #25d88d); }
+  .icon.terjual  { background: linear-gradient(135deg, #81ef59, #40ca3d); }
+
+  /* ===== TEXT ===== */
+  .dashboard-card h5 {
+    margin-top: 10px;
     font-weight: 700;
-    margin: 0;
+    color: #0f2f63;
+    font-size: 17px;
   }
 
-  /* Color variations */
-  .users h3 { color: #2cce75; }
-  .produk h3 { color: #102863; }
-  .toko h3 { color: #81ef59; }
-
-  /* Accent bar bottom */
-  .dashboard-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 6px;
-    border-radius: 0 0 16px 16px;
-    background: linear-gradient(90deg, #2cce75, #102863, #81ef59);
+  .dashboard-card h3 {
+    margin-top: 6px;
+    font-size: 42px;
+    font-weight: 800;
+    color: #0f2f63;
   }
 
-  /* Responsive */
+  /* RESPONSIVE */
   @media (max-width: 768px) {
     .dashboard-card {
       flex: 1 1 100%;
     }
   }
+
 </style>
 
-<div class="dashboard-row">
-  <div class="dashboard-card users">
-    <div class="icon">👤</div>
-    <h5>Total Produk Saya</h5>
-    <h3>{{ $totalProduk }}</h3>
-  </div>
+<div class="dashboard-wrap">
+  <div class="dashboard-row">
 
-  <div class="dashboard-card produk">
-    <div class="icon">🏪</div>
-    <h5>Toko Saya</h5>
-    <h3>{{ $totalToko }}</h3>
-  </div>
+    <div class="dashboard-card">
+      <div class="icon produk">
+        <i class="fa-solid fa-boxes-stacked"></i>
+      </div>
+      <h5>Total Produk Saya</h5>
+      <h3>{{ $totalProduk }}</h3>
+    </div>
 
-  <div class="dashboard-card toko">
-    <div class="icon">📦</div>
-    <h5>Produk Terjual</h5>
-    <h3>{{ $produkTerjual }}</h3>
+
+    <div class="dashboard-card">
+      <div class="icon toko">
+        <i class="fa-solid fa-store"></i>
+      </div>
+      <h5>Toko Saya</h5>
+      <h3>{{ $totalToko }}</h3>
+    </div>
+
+
+    <div class="dashboard-card">
+      <div class="icon terjual">
+        <i class="fa-solid fa-cart-arrow-down"></i>
+      </div>
+      <h5>Produk Terjual</h5>
+      <h3>{{ $produkTerjual }}</h3>
+    </div>
+
   </div>
 </div>
-
 
 @endsection

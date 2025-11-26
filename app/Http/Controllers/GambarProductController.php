@@ -11,8 +11,6 @@ class GambarProductController extends Controller
     public function destroy($id)
     {
         $gambar = GambarProduct::findOrFail($id);
-
-        // Hapus file fisik dari public/uploads/produk
         $path = public_path('uploads/produk/' . $gambar->nama_gambar);
         if(file_exists($path)){
             unlink($path);

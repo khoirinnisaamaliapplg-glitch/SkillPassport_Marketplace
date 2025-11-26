@@ -8,31 +8,32 @@ use App\Models\Kategori;
 
 class HomeController extends Controller
 {
+    // landing page
     public function index()
     {
-        // Ambil semua toko
         $tokos = Toko::take(6)->get();
-
-        // Ambil kategori
         $kategoris = Kategori::all();
-
-        // Ambil semua produk lengkap dengan gambar, kategori, toko
         $produks = Product::with('gambars', 'kategori', 'toko')->get();
-
         return view('public.ladingpage', compact('tokos', 'kategoris', 'produks'));
     }
+
+    // toko
     public function toko()
     {
-        $toko = Toko::all(); // ambil semua toko
+        $toko = Toko::all(); 
         return view('public.toko', compact('toko'));
     }
+    
+    // produk
     public function produk()
     {
-        // Ambil semua toko dengan produk + gambar
+        
         $tokos = Toko::with(['produks.gambars'])->get();
 
         return view('public.produk', compact('tokos'));
     }
+
+    // detail
     public function detail($id)
     {
         $produk = Product::with(['gambars', 'kategori', 'toko'])

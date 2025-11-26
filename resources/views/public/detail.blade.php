@@ -26,6 +26,7 @@
   }
   .badge-kategori {
     background: #0f2f63;
+    color: white;
   }
   .product-image {
     border-radius: 14px;
@@ -33,6 +34,14 @@
     height: 380px;
     object-fit: cover;
     box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  }
+  .thumbnail {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
   }
   .info-box {
     border-radius: 14px;
@@ -50,54 +59,68 @@
 
   <div class="row">
 
-    <!-- FOTO PRODUK -->
-    <div class="col-md-5 mb-4">
-     @if ($produk->gambars->count())
-        <img src="{{ asset('uploads/produk/'.$produk->gambars->first()->nama_gambar) }}" class="product-image">
-    @else
-        <img src="{{ asset('image/no-image.png') }}" class="product-image">
-    @endif
 
+<div class="col-md-5 mb-4">
 
+  @php
+    $selected = request()->get('img');
+    $mainImage = $selected
+        ? asset('uploads/produk/' . $selected)
+        : ($produk->gambars->count()
+            ? asset('uploads/produk/'.$produk->gambars->first()->nama_gambar)
+            : asset('image/lgmarket.png'));
+  @endphp
+
+  
+  <img src="{{ $mainImage }}" class="product-image mb-3">
+
+  
+  @if ($produk->gambars->count() > 1)
+    <div class="d-flex gap-2 flex-wrap">
+      @foreach ($produk->gambars as $g)
+        <a href="?img={{ $g->nama_gambar }}">
+          <img src="{{ asset('uploads/produk/'.$g->nama_gambar) }}"
+               class="thumbnail"
+               style="border: {{ $selected == $g->nama_gambar ? '2px solid #2cce75' : '2px solid #ddd' }};">
+        </a>
+      @endforeach
     </div>
+  @endif
 
-    <!-- DETAIL PRODUK -->
-    <div class="col-md-7">
+</div>
 
-      <h1 class="product-title mb-2">{{ $produk->nama_produk }}</h1>
 
-      <span class="badge badge-kategori py-2 px-3 mb-3">
-        {{ $produk->kategori->nama_kategori ?? 'Tanpa Kategori' }}
-      </span>
+<div class="col-md-7">
 
-      <h3 class="product-price mt-3 mb-3">
-        Rp {{ number_format($produk->harga, 0, ',', '.') }}
-      </h3>
+  <h1 class="product-title mb-2">{{ $produk->nama_produk }}</h1>
 
-      <p class="text-muted" style="font-size: 15px;">
-        {{ $produk->deskripsi ? $produk->deskripsi : 'Tidak ada deskripsi.' }}
-      </p>
+  <span class="badge badge-kategori py-2 px-3 mb-3">
+    {{ $produk->kategori->nama_kategori ?? 'Tanpa Kategori' }}
+  </span>
 
-      <div class="info-box mt-4">
-        <p class="mb-1"><strong>Toko:</strong> {{ $produk->toko->nama_toko }}</p>
-        <p class="mb-1"><strong>Lokasi:</strong> {{ $produk->toko->lokasi }}</p>
-        <p class="mb-0"><strong>Jam Buka:</strong> {{ $produk->toko->jam_buka }}</p>
-      </div>
+  <h3 class="product-price mt-3 mb-3">
+    Rp {{ number_format($produk->harga, 0, ',', '.') }}
+  </h3>
 
-      <a href="https://wa.me/{{ $produk->toko->no_wa }}?text=Halo%2C%20saya%20ingin%20beli%20{{ urlencode($produk->nama_produk) }}"
-         class="btn btn-wa btn-lg rounded-pill mt-4 px-4">
-        <i class="fa-brands fa-whatsapp me-2"></i> Beli Lewat WhatsApp
-      </a>
+  <p class="text-muted" style="font-size: 15px;">
+    {{ $produk->deskripsi ? $produk->deskripsi : 'Tidak ada deskripsi.' }}
+  </p>
 
-    </div>
+  <div class="info-box mt-4">
+    <p class="mb-1"><strong>Toko:</strong> {{ $produk->toko->nama_toko }}</p>
+    <p class="mb-1"><strong>Lokasi:</strong> {{ $produk->toko->alamat }}</p>
+    <p class="mb-0"><strong>Jam Buka:</strong> {{ $produk->toko->jam_buka }}</p>
   </div>
 
-  <!-- DESKRIPSI -->
-  <div class="mt-5">
-    <h4 class="judul-section mb-3">Deskripsi Produk</h4>
-    <p class="text-muted">
-      {{ $produk->deskripsi ? $produk->deskripsi : 'Tidak ada deskripsi tambahan.' }}
-    </p>
+  <a href="https://wa.me/6287753514067?text={{ urlencode('Halo, saya ingin beli ' . $produk->nama_produk) }}"
+    class="btn btn-wa btn-lg rounded-pill mt-4 px-4">
+      <i class="fa-brands fa-whatsapp me-2"></i> Beli Lewat WhatsApp
+  </a>
+
+
+</div>
+
+
   </div>
 
 </div>
