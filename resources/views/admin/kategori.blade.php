@@ -11,21 +11,21 @@
     }
 
 
-    .header-custom {
-        background: #ffffff;
-        padding: 25px;
+   .header-custom {
+        background: linear-gradient(135deg, #0f2f63, #143b85);
+        padding: 26px;
         border-radius: 14px;
-        border: 1px solid #e5e7eb;
-        margin-bottom: 28px;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+        color: white;
+        margin-bottom: 30px;
         text-align: center;
+        box-shadow: 0 5px 18px rgba(0,0,0,0.18);
     }
 
     .header-custom h1 {
+        margin: 0;
         font-size: 26px;
         font-weight: 700;
-        color: #0f2f63;
-        margin: 0;
+        letter-spacing: .5px;
     }
 
   
